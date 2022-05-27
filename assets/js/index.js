@@ -32,6 +32,10 @@ const populateCells = () => {
 
             cell.dataset.coordinate = coordinateString;
 
+            if(board.showHit(row,column)){
+                cell.innerText = board.showHit(row,column);
+            }
+
             let container = document.querySelector(".board");
 
             container.appendChild(cell);
@@ -41,48 +45,60 @@ const populateCells = () => {
 
 // Selecting/clicking a Cell to check if hit or miss and turn color of cell red or green, respectively
 
-const clickingCell = (cell) => {
-    let coordinateAtt = cell.dataset.coordinate;
+const clickingCell = () => { //TODO change to a name with handler in it.
+            let e = window.event.target; //* how to access the event target from a listener.
+            let coordinateAtt = e.dataset.coordinate;
             //row,col
+            console.log('testerrr', e);
             let coordinate = coordinateAtt.split(",");
             let [row, col] = coordinate
             let shot = board.makeHit(row, col);
 
+            console.log('test',board.numRemaining);
+
             if(board.isGameOver() === false){
                 if (shot) {
-                    cell.classList.add("hit");
-                    cell.innerText = shot;
+                    e.classList.add("hit");
+                    e.innerText = shot;
                 }
                 else {
-                    cell.classList.add("miss");
+                    e.classList.add("miss");
                 }
+
             }
+            else{
+                if (shot) { //? here to fill the last shot in before the event gets stopped
+                    e.classList.add("hit");
+                    e.innerText = shot;
+                }
+                let cells = document.querySelectorAll('.cell');
+                cells.forEach(el =>{
+                    el.removeEventListener('click', clickingCell);
+                })
+            }
+
+
 }
 
 const cellShot = () => {
     let allCells = document.querySelectorAll(".cell");
     allCells.forEach(cell => {
-        cell.addEventListener("click", event => {
-            clickingCell(cell);
-            event.stopPropagation();
-        })
-    });
-}
 
-const gameOver = () => {
-    if(board.isGameOver()){
-        console.log('game over')
-        let allCells = document.querySelectorAll(".cell")
-        allCells.forEach(cell => {
-            cell.removeEventListener("click", clickingCell);
-        });
-    }
+        cell.addEventListener('click', clickingCell);
+
+    });
 }
 
 window.onload = () => {
     createBoardLayout();
     populateCells();
     cellShot();
-    gameOver();
+
+
+
+    // removeListen();
+
+    // endGame();
+    // gameOver();
 
 }

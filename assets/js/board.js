@@ -37,8 +37,18 @@ export default class Board {
     makeHit(row, col) {
         if (this.grid[row][col]) {
             this.numRemaining--;
+
         }
         return this.grid[row][col];
+    }
+
+    showHit(row, col){
+        if(this.grid[row][col]){
+            return this.grid[row][col];
+        }
+        else{
+            return false;
+        }
     }
 
     verifyFit(grid, length, x, y, orientation) {
@@ -80,9 +90,17 @@ export default class Board {
                 grid[i][x] = length;
             }
         }
-    } 
+    }
 
     isGameOver() {
-        return this.numRemaining <= 0;
+        // console.log(this.numRemaining);
+        if(this.numRemaining <= 0){
+            // this.numRemaining--;
+            return true;
+        }
+        else{
+            return false;
+        }
+        // return this.numRemaining <= 0;
     }
 }
