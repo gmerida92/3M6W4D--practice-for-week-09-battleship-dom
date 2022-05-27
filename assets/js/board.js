@@ -83,6 +83,6 @@ export default class Board {
     } 
 
     isGameOver() {
-        return this.numRemaining === 0;
+        return this.numRemaining <= 0;
     }
 }
