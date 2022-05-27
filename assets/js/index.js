@@ -55,7 +55,7 @@ const clickingCell = (cell) => {
                 }
                 else {
                     cell.classList.add("miss");
-                }  
+                }
             }
 }
 
